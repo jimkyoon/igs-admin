@@ -1,25 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import * as React from "react";
+
+// components
+import BackgroundDiv from "./components/backgroundDiv";
+import Login from "./templates/login";
+import MainSection from "./templates/mainSection";
+import AlertBar from "./components/alertBar";
 
 function App() {
+  // any errors or success messages
+  const [alert, setAlert] = React.useState({
+    isError: true,
+    message: "testing",
+  });
+
+  React.useEffect(() => {
+    // after component mounts, if message is there, after 5 seconds, disppears
+    const timer = setTimeout(() => {
+      setAlert({ ...alert, message: "" });
+    }, 5000);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [alert]);
+
+  const user = true;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BackgroundDiv>
+      {user ? (
+        <MainSection setAlert={setAlert} />
+      ) : (
+        <Login setAlert={setAlert} />
+      )}
+      {alert.message.length !== 0 ? (
+        <AlertBar isError={alert.isError}>{alert.message}</AlertBar>
+      ) : null}
+    </BackgroundDiv>
   );
-}
+};
 
 export default App;
