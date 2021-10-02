@@ -1,5 +1,4 @@
 import * as React from "react";
-import { collection, addDoc } from "firebase/firestore";
 
 import FileInput from "../components/fileInput";
 import TextAreaInput from "../components/textareaInput";
@@ -88,13 +87,14 @@ const RightSide = ({ page, post, setAlert, setPostId }) => {
         return (
           <label>
             {labelName}
+            {formData[fieldName[0]] instanceof String ? formData[fieldName[0]] : null}
             <FileInput
               key={field.id + Object.keys(field)}
               name={fieldName[0]}
               onChange={(e) =>
                 setFormData(() => ({
                   ...formData,
-                  [fieldName[0]]: e.target.value,
+                  [fieldName[0]]: e.target.files[0],
                 }))
               }
               type="file"
