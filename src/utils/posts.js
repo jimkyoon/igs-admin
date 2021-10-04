@@ -8,6 +8,12 @@ import {
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { db, storage } from "./firebase";
 
+const fileType = {
+  "articles": "image",
+  "sounds": "audio",
+  "stories": "images",
+};
+
 const uploadFileToStorage = async (file, page) => {
   let returnLinkForFormData;
   const folder = page === "sounds" ? "sounds/" : "images/";
@@ -39,11 +45,6 @@ const getAllDocs = async (page) => {
 
 const submitNewDoc = async (page, formState) => {
   console.log("now submitting form");
-  const fileType = {
-    "articles": "image",
-    "sounds": "audio",
-    "stories": "images",
-  };
   if (formState[fileType[page]]) {
     const uploadFile = formState[fileType[page]];
     const newUploadLink = await uploadFileToStorage(uploadFile, page);
@@ -56,6 +57,12 @@ const submitNewDoc = async (page, formState) => {
 };
 
 const updatePost = async (page, postId, formState) => {
+  if (formState[fileType[page]]) {
+    const uploadFile = formState[fileType[page]];
+    const newUploadLink = await uploadFileToStorage(uploadFile, page);
+    console.log("new file", newUploadLink);
+    formState[fileType[page]] = newUploadLink;
+  }
   console.log("now updating doc");
   const edittedFormState = { ...formState };
   delete edittedFormState.id;
