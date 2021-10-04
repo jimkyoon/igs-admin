@@ -120,6 +120,37 @@ const RightSide = ({ page, post, setAlert, setPostId }) => {
           </label>
         );
       }
+      if (fieldType[0] === "array") {
+        console.log("array field", formData);
+        const fieldName0 = fieldName[0];
+        let fileList;
+        if (Array.isArray(formData.fieldName0)) {
+          fileList = formData.fieldName0.map((a) => `${a}, `);
+        }
+        return (
+          <label>
+            {labelName}
+            {formData.fieldName0.length === 0 ? null : fileList }
+            <FileInput
+              key={field.id + Object.keys(field)}
+              name={fieldName0}
+              onChange={(e) => {
+                setFormData(() => {
+                  return(
+                    {...formData,
+                    [fieldName[0]]: [...fieldName0, e.target.value],
+                    }
+                  );
+                });
+                e.target.value = "";
+                return;
+              }
+              }
+              type="file"
+            />
+          </label>
+        );
+      }
     });
   };
 
