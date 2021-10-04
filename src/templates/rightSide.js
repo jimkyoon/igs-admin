@@ -1,12 +1,12 @@
 import * as React from "react";
-
 import FileInput from "../components/fileInput";
+import SubmitButton from "../components/submitButton";
 import TextAreaInput from "../components/textareaInput";
 import TextInput from "../components/textInput";
-import SubmitButton from "../components/submitButton";
-
 import { formFields, formState } from "../utils/formInfo";
 import { submitNewDoc, updatePost } from "../utils/posts";
+
+
 
 const initialFormState = (page, stateBasedPage, currentPost) => {
   if (currentPost) {
@@ -17,13 +17,13 @@ const initialFormState = (page, stateBasedPage, currentPost) => {
 
 const RightSide = ({ page, post, setAlert, setPostId }) => {
   const [formData, setFormData] = React.useState(formState[page]);
-  console.log('rightside prop post', post);
+  console.log("rightside prop post", post);
 
   React.useEffect(() => {
     setFormData(initialFormState(page, formState, post));
   }, [page, post]);
 
-  console.log('formstate', formData);
+  console.log("formstate", formData);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -87,7 +87,9 @@ const RightSide = ({ page, post, setAlert, setPostId }) => {
         return (
           <label>
             {labelName}
-            {formData[fieldName[0]] instanceof String ? formData[fieldName[0]] : null}
+            {formData[fieldName[0]] instanceof String
+              ? formData[fieldName[0]]
+              : null}
             <FileInput
               key={field.id + Object.keys(field)}
               name={fieldName[0]}

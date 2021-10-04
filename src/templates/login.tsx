@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Box,
   Button,
@@ -7,16 +6,22 @@ import {
   InputLabel,
   Typography,
 } from "@mui/material";
+import React from "react";
+import { useAlertContext } from "../utils/alertContext";
+import { useAuthContext } from "../utils/authContext";
 
-const Login = ({ setAlert }) => {
+const Login = () => {
+  const { setAlert } = useAlertContext();
+  const { login } = useAuthContext();
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (email === "" || password === "") {
-      setAlert({ isError: true, message: "Please fill in fields." });
+      setAlert("Please fill in fields!");
     }
+    await login(email, password);
   };
 
   return (
@@ -65,12 +70,7 @@ const Login = ({ setAlert }) => {
             value={password}
           />
         </FormControl>
-        <Button
-          type="submit"
-          label="login"
-          variant="contained"
-          style={{ marginTop: "1rem" }}
-        >
+        <Button type="submit" variant="contained" style={{ marginTop: "1rem" }}>
           Sign In
         </Button>
       </form>
