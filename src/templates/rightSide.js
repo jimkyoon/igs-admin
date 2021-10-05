@@ -124,7 +124,7 @@ const RightSide = ({ page, post, setAlert, setPostId }) => {
         console.log("fieldArray", fieldArray);
         let fileList;
         if (Array.isArray(fieldArray)) {
-          fileList = fieldArray.map((a, index) => `[${index + 1}] ${a.name}, `);
+          fileList = fieldArray.map((a, index) => `[${index + 1}] ${a.name ? a.name : a}, `);
           return (
             <label>
               {labelName}
