@@ -7,13 +7,12 @@ import { AlertContextProvider, useAlertContext } from "./utils/alertContext";
 import { useAuthContext } from "./utils/authContext";
 
 const App: React.FC = () => {
-  const { user, logout } = useAuthContext();
+  const { user } = useAuthContext();
   const { alert, setAlert } = useAlertContext();
 
   return (
     <AlertContextProvider>
       <BackgroundDiv>
-        {user && <button onClick={logout}>LOGOUT</button>}
         {user ? <MainSection setAlert={setAlert} /> : <Login />}
         {alert ? <AlertBar isError={Boolean(alert)}>{alert}</AlertBar> : null}
       </BackgroundDiv>
