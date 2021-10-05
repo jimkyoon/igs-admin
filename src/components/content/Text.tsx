@@ -2,12 +2,12 @@ import { FormControl, Input, InputLabel } from "@mui/material";
 import React from "react";
 
 interface TextProps {
-  field: any;
-  fieldName: any;
+  fieldName: string;
   labelName: string;
+  value: string;
 }
 
-const Text: React.FC<TextProps> = ({ labelName, field, fieldName }) => {
+const Text: React.FC<TextProps> = ({ labelName, fieldName, value }) => {
   return (
     <FormControl
       key={labelName}
@@ -22,7 +22,6 @@ const Text: React.FC<TextProps> = ({ labelName, field, fieldName }) => {
         {labelName}
       </InputLabel>
       <Input
-        key={field.id + Object.keys(field)}
         name={fieldName[0]}
         // onChange={(e) =>
         //   setFormData(() => ({
@@ -32,7 +31,7 @@ const Text: React.FC<TextProps> = ({ labelName, field, fieldName }) => {
         // }
         type="text"
         placeholder={labelName}
-        // value={formData[fieldName[0]]}
+        value={value}
         sx={{ width: "45%" }}
       />
     </FormControl>

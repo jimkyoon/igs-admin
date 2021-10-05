@@ -18,8 +18,7 @@ const fileType = {
 const getOneDoc = async (page, id) => {
   try {
     const document = await getDoc(doc(db, page, id));
-
-    return document;
+    return document.data();
   } catch (error) {
     console.error("Failed to fetch document with id: ", id);
   }
