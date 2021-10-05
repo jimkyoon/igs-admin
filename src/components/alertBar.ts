@@ -1,6 +1,10 @@
 import styled from "@emotion/styled";
 
-const AlertBar = styled.div`
+interface AlertBarProps {
+  isError: boolean;
+}
+
+const AlertBar = styled.div<AlertBarProps>`
   position: fixed;
   z-index: 99;
   width: 100%;

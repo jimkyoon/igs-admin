@@ -34,10 +34,7 @@ export const formFields = {
     { color: "text" },
     { duration: "text" },
   ],
-  greetings: [
-    { title: "text" },
-    { greeting: "text" },
-  ],
+  greetings: [{ title: "text" }, { greeting: "text" }],
   sounds: [
     { title: "text" },
     { audio: "file" },

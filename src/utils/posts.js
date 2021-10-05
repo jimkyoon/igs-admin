@@ -2,6 +2,7 @@ import {
   addDoc,
   collection,
   doc,
+  getDoc,
   getDocs,
   updateDoc,
 } from "firebase/firestore";
@@ -9,9 +10,9 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { db, storage } from "./firebase";
 
 const fileType = {
-  "articles": "image",
-  "sounds": "audio",
-  "stories": "images",
+  articles: "image",
+  sounds: "audio",
+  stories: "images",
 };
 
 const uploadFileToStorage = async (file, page) => {
@@ -20,12 +21,12 @@ const uploadFileToStorage = async (file, page) => {
   const fileRef = ref(storage, folder + file.name);
   console.log("uploadFileToStorage fileRef", fileRef);
   await uploadBytes(fileRef, file).then(async (snapshot) => {
-    await getDownloadURL(snapshot.ref).then(dURL => {
-      console.log('this is durl', dURL);
+    await getDownloadURL(snapshot.ref).then((dURL) => {
+      console.log("this is durl", dURL);
       returnLinkForFormData = dURL;
     });
   });
-  console.log('returnLinkForFOrmData after uploadByte', returnLinkForFormData);
+  console.log("returnLinkForFOrmData after uploadByte", returnLinkForFormData);
   return returnLinkForFormData;
 };
 
@@ -39,12 +40,14 @@ const storageLinkForState = async (page, formState) => {
   if (fileType[page] === "images") {
     const uploadFiles = formState[fileType[page]];
     console.log("uploadFiles before", uploadFiles);
-    const uploadFilesPromiseArray = uploadFiles.map((file) => uploadFileToStorage(file, page));
+    const uploadFilesPromiseArray = uploadFiles.map((file) =>
+      uploadFileToStorage(file, page)
+    );
     const resolvedUploadFiles = await Promise.all(uploadFilesPromiseArray);
     console.log("uploadFiles after", resolvedUploadFiles);
     return resolvedUploadFiles;
   }
-}
+};
 
 const getAllDocs = async (page) => {
   if (page.length !== 0) {
@@ -81,4 +84,4 @@ const updatePost = async (page, postId, formState) => {
   console.log("finishing up update");
 };
 
-export { getAllDocs, submitNewDoc, updatePost };
+export { getOneDoc, getAllDocs, submitNewDoc, updatePost };
