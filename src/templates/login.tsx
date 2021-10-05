@@ -1,16 +1,15 @@
 import {
   Box,
   Button,
-  FormControl,
   Input,
   Typography,
 } from "@mui/material";
 import React from "react";
-import { useAlertContext } from "../utils/alertContext";
+// import { useAlertContext } from "../utils/alertContext";
 import { useAuthContext } from "../utils/authContext";
 
 const Login = () => {
-  const { setAlert } = useAlertContext();
+  // const { setAlert } = useAlertContext();
   const { login } = useAuthContext();
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -18,9 +17,14 @@ const Login = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (email === "" || password === "") {
-      setAlert("Please fill in fields!");
+      alert("Please fill in fields.");
+    } else {
+      try {
+        await login(email, password)
+      } catch(error) {
+        alert("Your email and/or password are not correct.")
+      }
     }
-    await login(email, password);
   };
 
   return (
@@ -51,22 +55,20 @@ const Login = () => {
           width: "250px",
         }}
       >
-        <FormControl style={{ marginBottom: "1rem" }}>
-          <Input
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
-            type="email"
-            value={email}
-          />
-        </FormControl>
-        <FormControl style={{ marginBottom: "1rem" }}>
-          <Input
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="password"
-            type="password"
-            value={password}
-          />
-        </FormControl>
+        <Input
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
+          type="email"
+          value={email}
+          style={{ marginBottom: "1rem" }}
+        />
+        <Input
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
+          type="password"
+          value={password}
+          style={{ marginBottom: "1rem" }}
+        />
         <Button type="submit" variant="contained" style={{ marginTop: "1rem" }}>
           Sign In
         </Button>

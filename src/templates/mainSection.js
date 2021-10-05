@@ -1,8 +1,8 @@
 import * as React from "react";
 
-import TopBar from "./topBar";
+import Navbar from "./navbar";
 import LeftSide from "./leftSide";
-import RightSide from "./rightSide";
+import Content from "./content";
 
 import { getAllDocs } from "../utils/posts";
 
@@ -40,10 +40,10 @@ const MainSection = ({ setAlert }) => {
 
   return (
     <div>
-      <TopBar page={page} pages={pages} setPage={setPage} />
+      <Navbar page={page} pages={pages} setPage={setPage} />
       <div style={mainSectionStyling}>
         <LeftSide list={arrayOfList} postId={postId} setPostId={setPostId} />
-        <RightSide
+        <Content
           page={page}
           post={postRightSideData}
           setAlert={setAlert}

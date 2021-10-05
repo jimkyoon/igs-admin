@@ -11,7 +11,7 @@ const AlertContext = React.createContext<IAlertContext>({
 });
 
 export const AlertContextProvider: React.FC = ({ children }) => {
-  const [alert, setAlert] = useState("testing");
+  const [alert, setAlert] = useState('');
 
   return (
     <AlertContext.Provider value={{ alert, setAlert }}>
