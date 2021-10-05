@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import Navbar from "./navbar";
-import LeftSide from "./leftSide";
+import Sidebar from "./sidebar";
 import Content from "./content";
 
 import { getAllDocs } from "../utils/posts";
@@ -42,7 +42,7 @@ const MainSection = ({ setAlert }) => {
     <div>
       <Navbar page={page} pages={pages} setPage={setPage} />
       <div style={mainSectionStyling}>
-        <LeftSide list={arrayOfList} postId={postId} setPostId={setPostId} />
+        <Sidebar list={arrayOfList} postId={postId} setPostId={setPostId} />
         <Content
           page={page}
           post={postRightSideData}
