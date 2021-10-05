@@ -5,6 +5,8 @@ import UnauthenticatedRoutes from "./components/UnauthenticatedRoutes";
 import { AlertContextProvider } from "./utils/alertContext";
 import { useAuthContext } from "./utils/authContext";
 
+import "./index.css"
+
 const App: React.FC = () => {
   const { user } = useAuthContext();
 
