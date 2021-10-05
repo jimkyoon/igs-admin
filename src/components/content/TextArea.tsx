@@ -2,12 +2,12 @@ import { FormControl, InputLabel, TextareaAutosize } from "@mui/material";
 import React from "react";
 
 interface TextAreaProps {
-  field: any;
   fieldName: any;
   labelName: string;
+  value: string;
 }
 
-const TextArea: React.FC<TextAreaProps> = ({ field, fieldName, labelName }) => {
+const TextArea: React.FC<TextAreaProps> = ({ fieldName, labelName, value }) => {
   return (
     <FormControl
       key={labelName}
@@ -25,7 +25,6 @@ const TextArea: React.FC<TextAreaProps> = ({ field, fieldName, labelName }) => {
       <TextareaAutosize
         aria-label="body"
         minRows={5}
-        key={field.id + Object.keys(field)}
         name={fieldName[0]}
         // onChange={(e) =>
         //   setFormData(() => ({
@@ -33,7 +32,7 @@ const TextArea: React.FC<TextAreaProps> = ({ field, fieldName, labelName }) => {
         //     [fieldName[0]]: e.target.value,
         //   }))
         // }
-        // value={formData[fieldName[0]]}
+        value={value}
         style={{ width: "270px" }}
       />
     </FormControl>

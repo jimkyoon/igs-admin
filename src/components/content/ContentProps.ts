@@ -1,5 +1,5 @@
 export interface ContentProps {
-  field: any;
-  fieldName: any;
+  fieldName: string;
   labelName: string;
+  value: string;
 }

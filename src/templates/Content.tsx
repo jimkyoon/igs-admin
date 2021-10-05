@@ -3,23 +3,30 @@ import React from "react";
 import FileInput from "../components/content/FileInput";
 import Text from "../components/content/Text";
 import TextArea from "../components/content/TextArea";
-import { formFields, formState } from "../utils/formInfo";
+import { formFields } from "../utils/formInfo";
+import { getOneDoc } from "../utils/posts";
 import { Page } from "./MainSection";
 
 interface ContentProps {
   page: Page;
-  post: any;
-  setPostId: (postId: any) => void;
+  postId: string;
 }
 
-const Content: React.FC<ContentProps> = ({ page, post }) => {
-  // @ts-ignore
-  const [formData, setFormData] = React.useState(formState[page]);
+const Content: React.FC<ContentProps> = ({ page, postId }) => {
+  const [post, setPost] = React.useState<any>();
 
   React.useEffect(() => {
-    // @ts-ignore
-    setFormData(post ?? formState[page]);
-  }, [page, post]);
+    async function getDocs() {
+      try {
+        const doc = await getOneDoc(page, postId);
+        console.log(doc);
+        setPost(doc);
+      } catch (error) {
+        console.error("Failed to get doc id", (error as any).message);
+      }
+    }
+    getDocs();
+  }, [page, postId]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -49,9 +56,9 @@ const Content: React.FC<ContentProps> = ({ page, post }) => {
     // console.log("you submit");
   };
 
-  const fields = (whichPage: any) => {
-    // @ts-ignore
-    const fieldsArrayFromPage = formFields[whichPage];
+  const fields = (page: Page) => {
+    const fieldsArrayFromPage = formFields[page];
+
     return fieldsArrayFromPage.map((field: any) => {
       const fieldName = Object.keys(field);
       const fieldType = Object.values(field);
@@ -60,27 +67,35 @@ const Content: React.FC<ContentProps> = ({ page, post }) => {
 
       if (fieldType[0] === "text") {
         return (
-          <Text field={field} fieldName={fieldName} labelName={labelName} />
+          <Text
+            fieldName={fieldName[0]}
+            labelName={labelName}
+            value={post[fieldName[0]]}
+          />
         );
       }
       if (fieldType[0] === "file") {
         return (
           <FileInput
-            field={field}
-            fieldName={fieldName}
+            fieldName={fieldName[0]}
             labelName={labelName}
+            value={post[fieldName[0]]}
           />
         );
       }
       if (fieldType[0] === "textarea") {
         return (
-          <TextArea field={field} fieldName={fieldName} labelName={labelName} />
+          <TextArea
+            fieldName={fieldName[0]}
+            labelName={labelName}
+            value={post[fieldName[0]]}
+          />
         );
       }
     });
   };
 
-  const fieldsList = fields(page);
+  const fieldsList = post ? fields(page) : null;
   const submitButtonText = post === null ? "Post" : "Update";
 
   return (
@@ -102,7 +117,7 @@ const Content: React.FC<ContentProps> = ({ page, post }) => {
         {fieldsList}
         <Button
           color={submitButtonText === "Post" ? "primary" : "secondary"}
-          data-postid={post !== null ? post.id : ""}
+          // data-postid={post !== null ? post.id : ""}
           type="submit"
           variant="contained"
           sx={{ marginTop: "3rem", marginLeft: "0.5rem" }}

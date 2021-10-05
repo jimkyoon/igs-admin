@@ -1,22 +1,17 @@
 import React from "react";
 import { useLocation } from "react-router";
+import { formFields } from "../utils/formInfo";
 import { getAllDocs } from "../utils/posts";
 import Content from "./Content";
 import Sidebar from "./Sidebar";
 
-export enum Page {
-  "articles",
-  "greetings",
-  "sounds",
-  "stories",
-}
+export type Page = keyof typeof formFields;
 
 const MainSection = ({}) => {
-  const [list, setList] = React.useState<any[]>([]);
-  const [postId, setPostId] = React.useState("");
-
   const location = useLocation();
   const path = location.pathname.substring(1);
+  const [list, setList] = React.useState<any[]>([]);
+  const [postId, setPostId] = React.useState("");
 
   React.useEffect(() => {
     async function getDocs() {
@@ -37,19 +32,12 @@ const MainSection = ({}) => {
     width: "100%",
   };
 
-  const findPostData = list[list.findIndex((i) => i.id === postId)];
-  const postRightSideData = findPostData ? findPostData : null;
-
   const arrayOfList = Array.isArray(list) ? list : [];
 
   return (
     <div style={mainSectionStyling}>
       <Sidebar list={arrayOfList} postId={postId} setPostId={setPostId} />
-      <Content
-        page={path as unknown as Page}
-        post={postRightSideData}
-        setPostId={setPostId}
-      />
+      <Content page={path as unknown as Page} postId={postId} />
     </div>
   );
 };
