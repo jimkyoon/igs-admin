@@ -1,14 +1,15 @@
-import * as React from "react";
-
-import Navbar from "./navbar";
-import Sidebar from "./sidebar";
-import Content from "./content";
-
+import React from "react";
+import BackgroundDiv from "../components/backgroundDiv";
+import { useAlertContext } from "../utils/alertContext";
 import { getAllDocs } from "../utils/posts";
+import Content from "./content";
+import Navbar from "./Navbar";
+import Sidebar from "./sidebar";
 
 const pages = ["articles", "greetings", "sounds", "stories"];
 
-const MainSection = ({ setAlert }) => {
+const MainSection = ({}) => {
+  const { setAlert } = useAlertContext();
   const [page, setPage] = React.useState(pages[0]);
   const [list, setList] = React.useState([]);
   // determine which form to show on RightSide
@@ -39,7 +40,7 @@ const MainSection = ({ setAlert }) => {
   const arrayOfList = Array.isArray(list) ? list : [];
 
   return (
-    <div>
+    <BackgroundDiv>
       <Navbar page={page} pages={pages} setPage={setPage} />
       <div style={mainSectionStyling}>
         <Sidebar list={arrayOfList} postId={postId} setPostId={setPostId} />
@@ -50,7 +51,7 @@ const MainSection = ({ setAlert }) => {
           setPostId={setPostId}
         />
       </div>
-    </div>
+    </BackgroundDiv>
   );
 };
 

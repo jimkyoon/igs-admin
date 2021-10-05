@@ -1,6 +1,13 @@
 import styled from "@emotion/styled";
 
-const PageButton = styled.div`
+interface PageButtonProps {
+  selected: boolean;
+}
+
+const PageButton =
+  styled.div <
+  PageButtonProps >
+  `
   -moz-transition: all 0.2s ease-in;
   -o-transition: all 0.2s ease-in;
   -webkit-transition: all 0.2s ease-in;

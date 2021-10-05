@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import AlertBar from "../components/alertBar";
 
 interface IAlertContext {
   alert: string;
@@ -11,11 +12,12 @@ const AlertContext = React.createContext<IAlertContext>({
 });
 
 export const AlertContextProvider: React.FC = ({ children }) => {
-  const [alert, setAlert] = useState('');
+  const [alert, setAlert] = useState("");
 
   return (
     <AlertContext.Provider value={{ alert, setAlert }}>
       {children}
+      {alert ? <AlertBar isError={Boolean(alert)}>{alert}</AlertBar> : null}
     </AlertContext.Provider>
   );
 };
