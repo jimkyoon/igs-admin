@@ -8,12 +8,16 @@ import { useAuthContext } from "./utils/authContext";
 import "./index.css"
 
 const App: React.FC = () => {
-  const { user } = useAuthContext();
+  const { user, loading } = useAuthContext();
 
   return (
     <AlertContextProvider>
       <BackgroundDiv>
-        {user ? <AuthenticatedRoutes /> : <UnauthenticatedRoutes />}
+        {loading ? null : user ? (
+          <AuthenticatedRoutes />
+        ) : (
+          <UnauthenticatedRoutes />
+        )}
       </BackgroundDiv>
     </AlertContextProvider>
   );

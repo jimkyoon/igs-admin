@@ -31,12 +31,12 @@ const uploadFileToStorage = async (file, page) => {
   const fileRef = ref(storage, folder + file.name);
   console.log("uploadFileToStorage fileRef", fileRef);
   await uploadBytes(fileRef, file).then(async (snapshot) => {
-    await getDownloadURL(snapshot.ref).then(dURL => {
-      console.log('this is durl', dURL);
+    await getDownloadURL(snapshot.ref).then((dURL) => {
+      console.log("this is durl", dURL);
       returnLinkForFormData = dURL;
     });
   });
-  console.log('returnLinkForFOrmData after uploadByte', returnLinkForFormData);
+  console.log("returnLinkForFOrmData after uploadByte", returnLinkForFormData);
   return returnLinkForFormData;
 };
 
@@ -62,7 +62,7 @@ const submitNewDoc = async (page, formState) => {
     console.log("new file", newUploadLink);
     formState[fileType[page]] = newUploadLink;
   }
-  console.log('formstate after submit and file', formState);
+  console.log("formstate after submit and file", formState);
   const newDoc = await addDoc(collection(db, page), formState);
   console.log("new doc", newDoc.bucket);
 };

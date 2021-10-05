@@ -1,9 +1,9 @@
 import { Button } from "@mui/material";
 import React from "react";
-import { useAuthContext } from "../utils/authContext";
-import PageButton from "../components/PageButton";
 import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
+import PageButton from "../components/PageButton";
+import { useAuthContext } from "../utils/authContext";
 
 enum Routes {
   ARTICLES = "/articles",
@@ -30,6 +30,7 @@ const pages = [
     route: Routes.STORIES,
   },
 ];
+
 const Navbar: React.FC = () => {
   const { logout } = useAuthContext();
   const location = useLocation();

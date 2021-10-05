@@ -1,16 +1,16 @@
 import React from "react";
-import { BrowserRouter, Switch } from "react-router-dom";
-import MainSection from "../templates/mainSection";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import MainSection from "../templates/MainSection";
 import Navbar from "../templates/Navbar";
 
-
-const AuthenticatedRoutes: React.FC = ({ children }) => {
+const AuthenticatedRoutes: React.FC = () => {
   return (
     <BrowserRouter>
       <Navbar />
-      {children}
       <Switch>
-        <MainSection />
+        <Route path="*">
+          <MainSection />
+        </Route>
         {/* <Route exact path={Routes.ARTICLES}>
           <MainSection />
         </Route>

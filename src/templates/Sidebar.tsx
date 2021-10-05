@@ -1,9 +1,13 @@
-import React from "react";
 import { Button, MenuItem } from "@mui/material";
+import React from "react";
 
-import PostSelector from "../components/postSelctor";
+interface SidebarProps {
+  list: any[];
+  postId: any;
+  setPostId: (postId: any) => void;
+}
 
-const Sidebar = ({ list, postId, setPostId }) => {
+const Sidebar: React.FC<SidebarProps> = ({ list, postId, setPostId }) => {
   const styling = {
     borderRight: "1px solid black",
     height: "100%",
@@ -37,7 +41,6 @@ const Sidebar = ({ list, postId, setPostId }) => {
       <Button
         key="brandnewpost"
         onClick={() => setPostId("new")}
-        selected={postId === "new"}
         variant="outlined"
         sx={{
           overflow: "auto",
