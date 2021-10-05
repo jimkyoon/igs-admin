@@ -1,9 +1,13 @@
 import * as React from "react";
 
-import FileInput from "../components/fileInput";
-import TextAreaInput from "../components/textareaInput";
-import TextInput from "../components/textInput";
-import SubmitButton from "../components/submitButton";
+import {
+  Box,
+  Button,
+  FormControl,
+  Input,
+  InputLabel,
+  TextareaAutosize,
+} from "@mui/material";
 
 import { formFields, formState } from "../utils/formInfo";
 import { submitNewDoc, updatePost } from "../utils/posts";
@@ -17,13 +21,13 @@ const initialFormState = (page, stateBasedPage, currentPost) => {
 
 const RightSide = ({ page, post, setAlert, setPostId }) => {
   const [formData, setFormData] = React.useState(formState[page]);
-  console.log('rightside prop post', post);
+  console.log("rightside prop post", post);
 
   React.useEffect(() => {
     setFormData(initialFormState(page, formState, post));
   }, [page, post]);
 
-  console.log('formstate', formData);
+  console.log("formstate", formData);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -66,9 +70,18 @@ const RightSide = ({ page, post, setAlert, setPostId }) => {
         fieldName[0][0].toUpperCase() + fieldName[0].substring(1);
       if (fieldType[0] === "text") {
         return (
-          <label>
-            {labelName}
-            <TextInput
+          <FormControl
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              margin: "auto",
+            }}
+          >
+            <InputLabel htmlFor={labelName} shrink={false} required>
+              {labelName}
+            </InputLabel>
+            <Input
               key={field.id + Object.keys(field)}
               name={fieldName[0]}
               onChange={(e) =>
@@ -78,17 +91,30 @@ const RightSide = ({ page, post, setAlert, setPostId }) => {
                 }))
               }
               type="text"
+              placeholder={labelName}
               value={formData[fieldName[0]]}
+              sx={{ width: "45%" }}
             />
-          </label>
+          </FormControl>
         );
       }
       if (fieldType[0] === "file") {
         return (
-          <label>
-            {labelName}
-            {formData[fieldName[0]] instanceof String ? formData[fieldName[0]] : null}
-            <FileInput
+          <FormControl
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              margin: "auto",
+            }}
+          >
+            <InputLabel htmlFor={labelName} shrink={false} required>
+              {labelName}
+              {formData[fieldName[0]] instanceof String
+                ? formData[fieldName[0]]
+                : null}
+            </InputLabel>
+            <Input
               key={field.id + Object.keys(field)}
               name={fieldName[0]}
               onChange={(e) =>
@@ -98,15 +124,28 @@ const RightSide = ({ page, post, setAlert, setPostId }) => {
                 }))
               }
               type="file"
+              sx={{ width: "45%" }}
             />
-          </label>
+          </FormControl>
         );
       }
       if (fieldType[0] === "textarea") {
         return (
-          <label>
-            {labelName}
-            <TextAreaInput
+          <FormControl
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              margin: "auto",
+              marginTop: "1rem",
+            }}
+          >
+            <InputLabel shrink={false} htmlFor={labelName} required>
+              {labelName}
+            </InputLabel>
+            <TextareaAutosize
+              aria-label="body"
+              minRows={5}
               key={field.id + Object.keys(field)}
               name={fieldName[0]}
               onChange={(e) =>
@@ -115,9 +154,11 @@ const RightSide = ({ page, post, setAlert, setPostId }) => {
                   [fieldName[0]]: e.target.value,
                 }))
               }
+              type="textarea"
               value={formData[fieldName[0]]}
+              style={{ width: "270px" }}
             />
-          </label>
+          </FormControl>
         );
       }
     });
@@ -127,17 +168,32 @@ const RightSide = ({ page, post, setAlert, setPostId }) => {
   const submitButtonText = post === null ? "Post" : "Update";
 
   return (
-    <>
-      <form>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        bgcolor: "background.paper",
+        borderRadius: "4px",
+        boxShadow: 1,
+        margin: "auto",
+        marginTop: "10vh",
+        padding: "2rem",
+        height: "500px",
+      }}
+    >
+      <form style={{ width: "600px" }} onSubmit={handleSubmit}>
         {fieldsList}
-        <SubmitButton
+        <Button
+          color={submitButtonText === "Post" ? "primary" : "secondary"}
           data-postid={post !== null ? post.id : ""}
-          onClick={handleSubmit}
           type="submit"
-          value={submitButtonText}
-        />
+          variant="contained"
+        >
+          {submitButtonText}
+        </Button>
       </form>
-    </>
+    </Box>
   );
 };
 

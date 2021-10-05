@@ -16,10 +16,14 @@ const MainSection = ({ setAlert }) => {
 
   React.useEffect(() => {
     async function getDocs() {
-      const docList = await getAllDocs(page);
-      // change list to match page, also reset what shows on right form
-      setList(docList);
-      setPostId("");
+      try {
+        const docList = await getAllDocs(page);
+        // change list to match page, also reset what shows on right form
+        setList(docList);
+        setPostId("");
+      } catch (error) {
+        console.error("Failed to get all docs", error.message);
+      }
     }
     getDocs();
   }, [page]);
