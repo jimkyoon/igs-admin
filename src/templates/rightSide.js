@@ -17,7 +17,6 @@ const initialFormState = (page, stateBasedPage, currentPost) => {
 
 const RightSide = ({ page, post, setAlert, setPostId }) => {
   const [formData, setFormData] = React.useState(formState[page]);
-  console.log('rightside prop post', post);
 
   React.useEffect(() => {
     setFormData(initialFormState(page, formState, post));
@@ -121,35 +120,34 @@ const RightSide = ({ page, post, setAlert, setPostId }) => {
         );
       }
       if (fieldType[0] === "array") {
-        console.log("array field", formData);
-        const fieldName0 = fieldName[0];
+        const fieldArray = formData[fieldName[0]];
+        console.log("fieldArray", fieldArray);
         let fileList;
-        if (Array.isArray(formData.fieldName0)) {
-          fileList = formData.fieldName0.map((a) => `${a}, `);
-        }
-        return (
-          <label>
-            {labelName}
-            {formData.fieldName0.length === 0 ? null : fileList }
-            <FileInput
-              key={field.id + Object.keys(field)}
-              name={fieldName0}
-              onChange={(e) => {
-                setFormData(() => {
-                  return(
-                    {...formData,
-                    [fieldName[0]]: [...fieldName0, e.target.value],
-                    }
-                  );
-                });
-                e.target.value = "";
-                return;
-              }
-              }
-              type="file"
-            />
-          </label>
-        );
+        if (Array.isArray(fieldArray)) {
+          fileList = fieldArray.map((a, index) => `[${index + 1}] ${a.name}, `);
+          return (
+            <label>
+              {labelName}
+              {fieldArray.length === 0 ? null : fileList }
+              <FileInput
+                key={field.id + Object.keys(field)}
+                name={fieldName[0]}
+                onChange={(e) => {
+                  setFormData(() => {
+                    return(
+                      {...formData,
+                      [fieldName[0]]: [...fieldArray, e.target.files[0]],
+                      }
+                    );
+                  });
+                  e.target.value = null;
+                  return;
+                }}
+                type="file"
+              />
+            </label>
+          );
+        } else return null;
       }
     });
   };

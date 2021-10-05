@@ -44,11 +44,20 @@ const submitNewDoc = async (page, formState) => {
     "sounds": "audio",
     "stories": "images",
   };
-  if (formState[fileType[page]]) {
+  console.log('fileType check', fileType[page]);
+  if (fileType[page] === "image" || fileType[page] === "audio") {
     const uploadFile = formState[fileType[page]];
     const newUploadLink = await uploadFileToStorage(uploadFile, page);
     console.log("new file", newUploadLink);
     formState[fileType[page]] = newUploadLink;
+  }
+  if (fileType[page] === "images") {
+    const uploadFiles = formState[fileType[page]];
+    console.log("uploadFiles before", uploadFiles);
+    const uploadFilesPromiseArray = uploadFiles.map((file) => uploadFileToStorage(file, page));
+    const resolvedUploadFiles = await Promise.all(uploadFilesPromiseArray);
+    console.log("uploadFiles after", resolvedUploadFiles);
+    formState[fileType[page]] = resolvedUploadFiles;
   }
   console.log('formstate after submit and file', formState);
   const newDoc = await addDoc(collection(db, page), formState);
