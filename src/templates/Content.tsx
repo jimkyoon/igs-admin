@@ -77,6 +77,37 @@ const Content: React.FC<ContentProps> = ({ page, post }) => {
           <TextArea field={field} fieldName={fieldName} labelName={labelName} />
         );
       }
+
+      if (fieldType[0] === "array") {
+        const fieldArray = formData[fieldName[0]];
+        console.log("fieldArray", fieldArray);
+        let fileList;
+        if (Array.isArray(fieldArray)) {
+          fileList = fieldArray.map((a, index) => `[${index + 1}] ${a.name ? a.name : a}, `);
+          return (
+            <label>
+              {labelName}
+              {fieldArray.length === 0 ? null : fileList }
+              <FileInput
+                key={field.id + Object.keys(field)}
+                // name={fieldName[0]}
+                onChange={(e) => {
+                  setFormData(() => {
+                    return(
+                      {...formData,
+                      [fieldName[0]]: [...fieldArray, e.target.files[0]],
+                      }
+                    );
+                  });
+                  e.target.value = null;
+                  return;
+                }}
+                type="file"
+              />
+            </label>
+          );
+        } else return null;
+      }
     });
   };
 

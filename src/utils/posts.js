@@ -15,16 +15,6 @@ const fileType = {
   stories: "images",
 };
 
-const getOneDoc = async (page, id) => {
-  try {
-    const document = await getDoc(doc(db, page, id));
-
-    return document;
-  } catch (error) {
-    console.error("Failed to fetch document with id: ", id);
-  }
-};
-
 const uploadFileToStorage = async (file, page) => {
   let returnLinkForFormData;
   const folder = page === "sounds" ? "sounds/" : "images/";
@@ -38,6 +28,25 @@ const uploadFileToStorage = async (file, page) => {
   });
   console.log("returnLinkForFOrmData after uploadByte", returnLinkForFormData);
   return returnLinkForFormData;
+};
+
+const storageLinkForState = async (page, formState) => {
+  if (fileType[page] === "image" || fileType[page] === "audio") {
+    const uploadFile = formState[fileType[page]];
+    const newUploadLink = await uploadFileToStorage(uploadFile, page);
+    console.log("new file", newUploadLink);
+    return newUploadLink;
+  }
+  if (fileType[page] === "images") {
+    const uploadFiles = formState[fileType[page]];
+    console.log("uploadFiles before", uploadFiles);
+    const uploadFilesPromiseArray = uploadFiles.map((file) =>
+      uploadFileToStorage(file, page)
+    );
+    const resolvedUploadFiles = await Promise.all(uploadFilesPromiseArray);
+    console.log("uploadFiles after", resolvedUploadFiles);
+    return resolvedUploadFiles;
+  }
 };
 
 const getAllDocs = async (page) => {
@@ -55,24 +64,17 @@ const getAllDocs = async (page) => {
 };
 
 const submitNewDoc = async (page, formState) => {
-  console.log("now submitting form");
-  if (formState[fileType[page]]) {
-    const uploadFile = formState[fileType[page]];
-    const newUploadLink = await uploadFileToStorage(uploadFile, page);
-    console.log("new file", newUploadLink);
-    formState[fileType[page]] = newUploadLink;
+  if (fileType[page]) {
+    formState[fileType[page]] = await storageLinkForState(page, formState);
   }
-  console.log("formstate after submit and file", formState);
   const newDoc = await addDoc(collection(db, page), formState);
-  console.log("new doc", newDoc.bucket);
 };
 
 const updatePost = async (page, postId, formState) => {
-  if (formState[fileType[page]]) {
-    const uploadFile = formState[fileType[page]];
-    const newUploadLink = await uploadFileToStorage(uploadFile, page);
-    console.log("new file", newUploadLink);
-    formState[fileType[page]] = newUploadLink;
+  if (fileType[page]) {
+    if (formState[fileType[page]].every((file) => file instanceof File)) {
+      formState[fileType[page]] = await storageLinkForState(page, formState);
+    }
   }
   console.log("now updating doc");
   const edittedFormState = { ...formState };
