@@ -20,7 +20,7 @@ export const formState = {
   stories: {
     background: "",
     duration: "",
-    images: [],
+    images: "",
     title: "",
   },
 };
@@ -43,7 +43,7 @@ export const formFields = {
   ],
   stories: [
     { title: "text" },
-    { images: "array" },
+    { images: "file" },
     { duration: "text" },
     { background: "text" },
   ],
