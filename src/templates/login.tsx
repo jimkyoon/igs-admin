@@ -3,7 +3,6 @@ import {
   Button,
   FormControl,
   Input,
-  InputLabel,
   Typography,
 } from "@mui/material";
 import React from "react";
@@ -53,7 +52,6 @@ const Login = () => {
         }}
       >
         <FormControl style={{ marginBottom: "1rem" }}>
-          <InputLabel htmlFor="email">Email</InputLabel>
           <Input
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
@@ -62,7 +60,6 @@ const Login = () => {
           />
         </FormControl>
         <FormControl style={{ marginBottom: "1rem" }}>
-          <InputLabel htmlFor="email">Password</InputLabel>
           <Input
             onChange={(e) => setPassword(e.target.value)}
             placeholder="password"
