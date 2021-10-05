@@ -1,16 +1,13 @@
-import {
-  Box,
-  Button,
-  Input,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Input, Typography } from "@mui/material";
 import React from "react";
+import { useHistory } from "react-router-dom";
 // import { useAlertContext } from "../utils/alertContext";
 import { useAuthContext } from "../utils/authContext";
 
 const Login = () => {
   // const { setAlert } = useAlertContext();
   const { login } = useAuthContext();
+  const history = useHistory();
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
@@ -20,9 +17,10 @@ const Login = () => {
       alert("Please fill in fields.");
     } else {
       try {
-        await login(email, password)
-      } catch(error) {
-        alert("Your email and/or password are not correct.")
+        await login(email, password);
+        history.push("/");
+      } catch (error) {
+        alert("Your email and/or password are not correct.");
       }
     }
   };
