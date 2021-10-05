@@ -9,9 +9,19 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { db, storage } from "./firebase";
 
 const fileType = {
-  "articles": "image",
-  "sounds": "audio",
-  "stories": "images",
+  articles: "image",
+  sounds: "audio",
+  stories: "images",
+};
+
+const getOneDoc = async (page, id) => {
+  try {
+    const document = await getDoc(doc(db, page, id));
+
+    return document;
+  } catch (error) {
+    console.error("Failed to fetch document with id: ", id);
+  }
 };
 
 const uploadFileToStorage = async (file, page) => {
@@ -71,4 +81,4 @@ const updatePost = async (page, postId, formState) => {
   console.log("finishing up update");
 };
 
-export { getAllDocs, submitNewDoc, updatePost };
+export { getOneDoc, getAllDocs, submitNewDoc, updatePost };
